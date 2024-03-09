@@ -11,11 +11,4 @@ Get-Content "C:\Path\To\NPSLog\npslog.log" | ForEach-Object {Parse-NPSLog -NPSSt
 
 
 # Convert an NPS.log into an NPS.csv.  This will take a very long time depending on your log size.
-$Count = 0
-Get-Content "C:\Path\To\NPSLog\npslog.log" | ForEach-Object {
-    $Count++
-    $PercentComplete = $Count / $NPSLog.Count * 100
-    Write-Progress -Activity ("Converting NPS Log to CSV") -Status ("$Count of $($NPSLog.Count) | $PercentComplete% | $_") -PercentComplete $PercentComplete -Id 1
-
-    Parse-NPSLog -NPSString $_
-} | Export-Csv "C:\Temp\NPS_Output.csv" -NoTypeInformation -Encoding UTF8
+Get-Content "C:\Path\To\NPSLog\npslog.log" | ForEach-Object { Parse-NPSLog -NPSString $_; } | Export-Csv "C:\Temp\NPS_Output.csv" -NoTypeInformation -Encoding UTF8
