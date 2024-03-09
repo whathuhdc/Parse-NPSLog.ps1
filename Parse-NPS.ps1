@@ -1,12 +1,59 @@
 # Original Perl Hash found at https://fastapi.metacpan.org/source/BINGOS/Parse-IASLog-1.12/lib/Parse/IASLog.pm
-# Converted to JSON with the following code:
+# Converted perl hash to json
 #      use strict;
 #      use warnings;
 #      use JSON;
-#      my %attributes = (.....);
+#      my %attributes = (.....); # paste hash
 #      my $json = encode_json \%attributes;
 #      print $json;
 #      perl.exe hash_to_json.pm
+#
+# Example:
+# ---------------------------------------------
+# Parse-NPSLog -NPSString "1.1.1.1,[somemacaddress],01/01/2024,00:00:00,IAS,[npsserver],8,2.2.2.2,30,[somemacaddress],31,[somemacaddress],4,3.3.3.3,87,GigabitEthernet1/0/3,61,15,5,50103,31,[somemacaddress],32,[switchname],30,[somemacaddress],44,000002c0,45,3,25,311 1 4.4.4.4 07/06/2023 13:28:13 4498764,40,3,55,01/01/2024 06:00:00,42,255414357,43,0,47,1109257,48,0,41,0,4108,5.5.5.5,4116,0,4128,6.6.6.6/16,5000,audit-session-id=asdf,5000,vlan-id=1234,5000,method=mab,4154,[somepolicyname],26,0x0000000000000000000,26,0x0000000000000000000,65,6,81,[somepolicy],64,13,4136,4,4142,0"
+#
+# Output:
+# ---------------------------------------------
+# NAS IP               : 1.1.1.1
+# Client Username      : [somemacaddress]
+# Timestamp Date       : 01/01/2024
+# Timestamp Time       : 00:00:00
+# Service              : IAS
+# RADIUS Server        : [npsserver]
+# Framed-IP-Address    : 2.2.2.2
+# Called-Station-ID    : [somemacaddress]
+# Calling-Station-ID   : [somemacaddress]
+# NAS-IP-Address       : 3.3.3.3
+# NAS-Port-Id          : GigabitEthernet1/0/3
+# NAS-Port-Type        : Ethernet
+# NAS-Port             : 50103
+# Calling-Station-ID2  : [somemacaddress]
+# NAS-Identifier       : [switchname]
+# Called-Station-ID2   : [somemacaddress]
+# Acct-Session-Id      : 000002c0
+# Acct-Authentic       : Remote
+# Class                : 311 1 4.4.4.4 07/06/2023 13:28:13 4498764
+# Acct-Status-Type     : Interim Update
+# Event-Timestamp      : 01/01/2024 06:00:00
+# Acct-Input-Octets    : 255414357
+# Acct-Output-Octets   : 0
+# Acct-Input-Packets   : 1109257
+# Acct-Output-Packets  : 0
+# Acct-Delay-Time      : 0
+# Client-IP-Address    : 5.5.5.5
+# Client-Vendor        : RADIUS Standard
+# Client-Friendly-Name : 6.6.6.6/16
+# Cisco-AV-Pair        : audit-session-id=asdf
+# Cisco-AV-Pair2       : vlan-id=1234
+# Cisco-AV-Pair3       : method=mab
+# Proxy-Policy-Name    : [somepolicyname]
+# Vendor-Specific      : 0x0000000000000000000
+# Vendor-Specific2     : 0x0000000000000000000
+# Tunnel-Medium-Type   : 802 (includes all 802 media plus Ethernet canonical format)
+# Tunnel-Pvt-Group-ID  : [somepolicy]
+# Tunnel-Type          : Virtual LANs (VLAN)
+# Packet-Type          : Accounting-Request
+# Reason-Code          : Success
 
 $Global:JSON = @"
 [
@@ -3438,7 +3485,7 @@ Function Parse-NPSLog {
     $Headers = @()
     For($I=6; $I -lt $LineSplit.Count; $I++) {
         $Identifier = $LineSplit[$I]
-        $IdentifierName = $JSON."$($LineSplit[$I])".name
+        $IdentifierName = $JSON."$Identifier".name
 
         If($IdentifierName -eq $Null) {
             $IdentifierName = $LineSplit[$I]
@@ -3464,6 +3511,5 @@ Function Parse-NPSLog {
 
         $I++
     }
-
     Return $Object
 }
